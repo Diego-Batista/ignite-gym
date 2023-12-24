@@ -1,3 +1,4 @@
+import { Loading } from '@components/Loading';
 import { Roboto_400Regular, Roboto_700Bold, useFonts } from '@expo-google-fonts/roboto';
 import { NativeBaseProvider } from 'native-base';
 import { StatusBar, Text } from 'react-native';
@@ -13,7 +14,7 @@ export default function App() {
         translucent
       />
 
-      {fontsLoaded ? <Text>hello World!</Text> : <Text>Carregando...</Text>}
+      {fontsLoaded ? <Text>hello World!</Text> : <Loading />}
       
     </NativeBaseProvider>
   );
