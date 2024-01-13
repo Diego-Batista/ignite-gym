@@ -1,9 +1,10 @@
-import { Center, Text } from "native-base";
+import { HomeHeader } from "@components/HomeHeader";
+import { VStack } from "native-base";
 
 export function Home() {
     return (
-        <Center>
-            <Text color='white'>Home</Text>
-        </Center>
+        <VStack>
+            <HomeHeader />
+        </VStack>
     )
 }
