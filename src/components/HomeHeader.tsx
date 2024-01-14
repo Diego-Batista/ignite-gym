@@ -12,7 +12,7 @@ export function HomeHeader() {
                 alt="Image do usúario"
                 mr={4}
             />
-            <VStack>
+            <VStack flex={1}>
                 <Text color='gray.100' fontSize='md'>
                     Olá
                 </Text>
