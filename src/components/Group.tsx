@@ -2,9 +2,10 @@ import { IPressableProps, Pressable, Text } from "native-base";
 
 type Props = IPressableProps & {
     name: string
+    isActive: boolean
 }
 
-export function Group({ name, ...rest }: Props) {
+export function Group({ name, isActive, ...rest }: Props) {
     return (
         <Pressable
             mr={3}
@@ -15,6 +16,7 @@ export function Group({ name, ...rest }: Props) {
             justifyContent='center'
             alignItems='center'
             overflow='hidden'
+            isPressed={isActive}
             _pressed={{
                 borderColor: 'green.500',
                 borderWidth: 1
