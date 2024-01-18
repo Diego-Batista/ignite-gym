@@ -10,7 +10,7 @@ export function Home() {
     const [groupSelected, setGroupSelected] = useState('costas')
 
     return (
-        <VStack>
+        <VStack >
             <HomeHeader />
 
             <FlatList 
@@ -30,14 +30,14 @@ export function Home() {
                 maxH={10}
             />
 
-            <VStack flex={1} px={8}>
-                <HStack justifyContent='space-between' mb={5}>
-                    <Heading color='gray.200' fontSize='md'>
+            <VStack px={8}>
+                <HStack justifyContent="space-between" mb={5}>
+                    <Heading color="gray.200" fontSize="md" fontFamily="heading">
                         Exercícios
                     </Heading>
 
-                    <Text color='gray.200' fontSize='sm'>
-                        4
+                    <Text color="gray.200" fontSize="sm">
+                        {exercises.length}
                     </Text>
                 </HStack>
 
@@ -48,8 +48,10 @@ export function Home() {
                         <ExerciseCard />
                     )}
                     showsVerticalScrollIndicator={false}
-                    _contentContainerStyle={{ marginBottom: 20}}
-                />        
+                    _contentContainerStyle={{
+                        paddingBottom: 20
+                    }}
+                />
             </VStack>
         </VStack>
     )

@@ -5,7 +5,7 @@ import { UserPhoto } from "./UserPhoto";
 
 export function HomeHeader() {
     return (
-        <HStack pt={16} pb={5} px={8} alignItems='center'>
+        <HStack bg="gray.600" pt={16} pb={5} px={8} alignItems="center">
             <UserPhoto 
                 source={{ uri: 'https://github.com/Diego-Batista.png'}}
                 size={16}
