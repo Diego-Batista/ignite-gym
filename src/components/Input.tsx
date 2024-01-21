@@ -2,16 +2,15 @@ import { FormControl, IInputProps, Input as NativeBaseInput } from 'native-base'
 
 type Props = IInputProps & {
   errorMessage?: string | null;
-  isDisabled?: boolean
 }
 
-export function Input({ isDisabled, errorMessage = null, isInvalid, ...rest }: Props) {
+export function Input({ errorMessage = null, isInvalid, ...rest }: Props) {
   const invalid = !!errorMessage || isInvalid;
 
   return (
     <FormControl isInvalid={invalid} mb={4}>
       <NativeBaseInput 
-        bg={ isDisabled ? 'gray.600' : 'gray.700'}
+        bg="gray.700"
         h={14}
         px={4}
         borderWidth={0}
