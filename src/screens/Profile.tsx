@@ -3,7 +3,7 @@ import { Button } from "@components/Button";
 import { Input } from "@components/Input";
 import { ScreenHeader } from "@components/ScreenHeader";
 import { UserPhoto } from "@components/UserPhoto";
-import { Center, Heading, ScrollView, Skeleton, Text, VStack } from "native-base";
+import { Box, Center, Heading, ScrollView, Skeleton, Text, VStack } from "native-base";
 import { useState } from "react";
 import { TouchableOpacity } from "react-native";
 
@@ -45,11 +45,11 @@ export function Profile() {
                         placeholderTextColor="gray.200"
                     />
 
-                    <VStack bg='gray.600' h={14} justifyContent='center' w='full' rounded={6} px={4}>
+                    <Box bg='gray.600' h={14} justifyContent='center' w='full' rounded={6} px={4}>
                         <Text color='gray.300' fontSize='md'>
                             diegobtistadev@gmail.com
                         </Text>
-                    </VStack>
+                    </Box>
 
                 </Center>
 

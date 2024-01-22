@@ -12,8 +12,8 @@ export function HistoryCard() {
             alignItems='center'
             justifyContent='space-between'
         >
-            <VStack mr={5}>
-                <Heading color='white' fontSize='md' textTransform='capitalize'>
+            <VStack mr={5} flex={1}>
+                <Heading color='white' fontSize='md' textTransform='capitalize' numberOfLines={1}>
                     Costas
                 </Heading>
 
@@ -23,7 +23,7 @@ export function HistoryCard() {
             </VStack>
 
             <Text color='gray.300' fontSize='md'>
-
+                9:05
             </Text>
         </HStack>
     )
