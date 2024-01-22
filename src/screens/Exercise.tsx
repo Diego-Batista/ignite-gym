@@ -2,7 +2,7 @@ import BodySvg from "@assets/body.svg";
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { AppNavigatorRoutesProps } from '@routes/app.routes';
-import { HStack, Heading, Icon, Text, VStack } from "native-base";
+import { HStack, Heading, Icon, Image, Text, VStack } from "native-base";
 import { TouchableOpacity } from "react-native";
 
 export function Exercise() {
@@ -36,6 +36,18 @@ export function Exercise() {
                         </Text>
                     </HStack>
                 </HStack>
+            </VStack>
+
+            <VStack p={8}>
+                <Image 
+                    source={{ uri: 'https://conteudo.imguol.com.br/c/entretenimento/0c/2019/12/03/remada-unilateral-com-halteres-1575402100538_v2_300x200.jpg'}}
+                    alt="Nome do exercício"
+                    resizeMode="cover"
+                    h={80}
+                    w='full'
+                    mb={3}
+                    rounded='lg'
+                />
             </VStack>
         </VStack>
     )
