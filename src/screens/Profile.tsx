@@ -3,6 +3,7 @@ import { Button } from "@components/Button";
 import { Input } from "@components/Input";
 import { ScreenHeader } from "@components/ScreenHeader";
 import { UserPhoto } from "@components/UserPhoto";
+import * as ImagePicker from "expo-image-picker";
 import { Box, Center, Heading, ScrollView, Skeleton, Text, VStack } from "native-base";
 import { useState } from "react";
 import { TouchableOpacity } from "react-native";
@@ -11,6 +12,10 @@ const PHOTO_SIZE = 33
 
 export function Profile() {
     const [photoIsLoading, setPhotoIsLoading] = useState(false)
+
+    async function handlePhotoSelected() {
+        await ImagePicker.launchImageLibraryAsync()
+    }
 
     return (
         <VStack flex={1}>
@@ -33,7 +38,7 @@ export function Profile() {
                         />
                     }
 
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={handlePhotoSelected}>
                         <Text color='green.500' fontWeight='bold' fontSize='md' mt={2} mb={8}>
                             Alterar foto
                         </Text>
