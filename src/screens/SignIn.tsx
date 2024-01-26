@@ -6,12 +6,18 @@ import { Button } from "@components/Button";
 import { Input } from "@components/Input";
 import { useNavigation } from "@react-navigation/native";
 import { AuthNavigationRoutesProps } from "@routes/auth.routes";
+import { Controller, useForm } from "react-hook-form";
 
 export function SignIn() {
     const navigation = useNavigation<AuthNavigationRoutesProps>()
+    const { control } = useForm()
 
     function handleNewAccount() {
         navigation.navigate('signUp')
+    }
+
+    async function handleSubmit() {
+        
     }
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1}} showsVerticalScrollIndicator={false}>
@@ -36,17 +42,37 @@ export function SignIn() {
                         Acesse sua conta
                     </Heading>
 
-                    <Input 
-                        placeholder="E-mail"
-                        keyboardType="email-address"
-                        autoCapitalize="none"
+                    <Controller 
+                        control={control}
+                        name="email"
+                        render={({ field: {onChange, value}}) => (
+                            <Input 
+                                placeholder="E-mail"
+                                keyboardType="email-address"
+                                autoCapitalize="none"
+                                onChangeText={onChange}
+                                value={value}
+                            />
+                        )}
                     />
-                    <Input 
-                        placeholder="Senha"
-                        secureTextEntry
+                    
+                    <Controller 
+                        control={control}
+                        name="password"
+                        render={({ field: {onChange, value}}) => (
+                            <Input 
+                                placeholder="Senha"
+                                secureTextEntry
+                                onChangeText={onChange}
+                                value={value}
+                            />
+                        )}
                     />
 
-                    <Button title="Acessar" />
+                    <Button 
+                        title="Acessar" 
+                        onPress={handleSubmit}
+                    />
                 </Center>
 
                 <Center mt={24}>
