@@ -10,14 +10,14 @@ import { Controller, useForm } from "react-hook-form";
 
 export function SignIn() {
     const navigation = useNavigation<AuthNavigationRoutesProps>()
-    const { control } = useForm()
+    const { control, handleSubmit } = useForm()
 
     function handleNewAccount() {
         navigation.navigate('signUp')
     }
 
-    async function handleSubmit() {
-        
+    async function handleSignIn(data: any) {
+        console.log(data)
     }
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1}} showsVerticalScrollIndicator={false}>
@@ -65,13 +65,15 @@ export function SignIn() {
                                 secureTextEntry
                                 onChangeText={onChange}
                                 value={value}
+                                onSubmitEditing={handleSubmit(handleSignIn)}
+                                returnKeyType="send"
                             />
                         )}
                     />
 
                     <Button 
                         title="Acessar" 
-                        onPress={handleSubmit}
+                        onPress={handleSubmit(handleSignIn)}
                     />
                 </Center>
 
