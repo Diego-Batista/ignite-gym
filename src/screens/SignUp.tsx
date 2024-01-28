@@ -53,6 +53,9 @@ export function SignUp() {
                     <Controller 
                         control={control}
                         name="name"
+                        rules={{
+                            required: 'Infome o nome.'
+                        }}
                         render={({ field: {onChange, value}}) => (
                             <Input 
                                 placeholder="Nome"
