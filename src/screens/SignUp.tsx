@@ -7,16 +7,23 @@ import { Input } from "@components/Input";
 import { useNavigation } from "@react-navigation/native";
 import { Controller, useForm } from "react-hook-form";
 
+type FormDataProps = {
+    name: string
+    email: string
+    password: string
+    password_confirm: string
+}
+
 export function SignUp() {
     const navigation = useNavigation()
 
-    const { control, handleSubmit } = useForm()
+    const { control, handleSubmit } = useForm<FormDataProps>()
 
     function handleGoBack() {
         navigation.goBack()
     }
 
-    async function handleSignUp(data: any){
+    async function handleSignUp(data: FormDataProps){
         console.log(data)
     }
 
