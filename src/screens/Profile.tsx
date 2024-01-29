@@ -3,17 +3,38 @@ import { Button } from "@components/Button";
 import { Input } from "@components/Input";
 import { ScreenHeader } from "@components/ScreenHeader";
 import { UserPhoto } from "@components/UserPhoto";
+import { yupResolver } from "@hookform/resolvers/yup";
 import * as FileSystem from 'expo-file-system';
 import * as ImagePicker from "expo-image-picker";
 import { Box, Center, Heading, ScrollView, Skeleton, Text, VStack, useToast } from "native-base";
 import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { TouchableOpacity } from "react-native";
+import * as yup from "yup";
 
 const PHOTO_SIZE = 33
+
+type FormDataProps = {
+    name: string
+    password: string
+    new_password: string
+    password_confirm: string
+}
+
+const profileSchema = yup.object({
+    name: yup.string().required('Informe o nome.'),
+    password: yup.string().required('Informe a senha.').min(6, 'A senha deve ter pelo menos 6 digitos.'),
+    new_password: yup.string().required('Informe a senha.').min(6, 'A senha deve ter pelo menos 6 digitos.'),
+    password_confirm: yup.string().required('Confirme a senha.').oneOf([yup.ref('new_password')], 'As senhas devem ser iguais.')
+})
 
 export function Profile() {
     const [photoIsLoading, setPhotoIsLoading] = useState(false)
     const [userPhoto, setUserPhoto] = useState('https://github.com/Diego-Batista.png')
+
+    const { control, handleSubmit, formState: { errors } } = useForm<FormDataProps>({
+        resolver: yupResolver(profileSchema)
+    })
 
     const toast = useToast()
 
@@ -50,6 +71,10 @@ export function Profile() {
         }  
     }
 
+    async function handleEditingProfile({ name, password, new_password, password_confirm }: FormDataProps){
+       
+    }
+
     return (
         <VStack flex={1}>
             <ScreenHeader title="Perfil"/>
@@ -77,10 +102,19 @@ export function Profile() {
                         </Text>
                     </TouchableOpacity>
 
-                    <Input 
-                        bg="gray.500" 
-                        placeholder='Diego Batista' 
-                        placeholderTextColor="gray.200"
+                    <Controller 
+                        control={control}
+                        name="name"
+                        render={({ field: {onChange, value}}) => (
+                            <Input 
+                                bg="gray.500" 
+                                placeholderTextColor="gray.200"
+                                placeholder="Diego Batista"
+                                onChangeText={onChange}
+                                value={value}
+                                errorMessage={errors.name?.message}
+                            />
+                        )}
                     />
 
                     <Box bg='gray.600' h={14} justifyContent='center' w='full' rounded={6} px={4}>
@@ -96,28 +130,56 @@ export function Profile() {
                         Alterar senha
                     </Heading>
 
-                    <Input 
-                        bg="gray.500" 
-                        placeholder='Senha antiga' 
-                        placeholderTextColor="gray.200"
-                        secureTextEntry
+                    <Controller
+                        control={control}
+                        name="password"
+                        render={({ field: {onChange, value}}) => (
+                            <Input 
+                                bg="gray.500" 
+                                placeholder='Senha antiga' 
+                                placeholderTextColor="gray.200"
+                                secureTextEntry
+                                onChangeText={onChange}
+                                value={value}
+                                errorMessage={errors.password?.message}
+                            />
+                        )}
                     />
 
-                    <Input 
-                        bg="gray.500" 
-                        placeholder='Nova senha' 
-                        placeholderTextColor="gray.200"
-                        secureTextEntry
+                    <Controller
+                        control={control}
+                        name="new_password"
+                        render={({ field: {onChange, value}}) => (
+                            <Input 
+                                bg="gray.500" 
+                                placeholder='Nova senha' 
+                                placeholderTextColor="gray.200"
+                                secureTextEntry
+                                onChangeText={onChange}
+                                value={value}
+                                errorMessage={errors.new_password?.message}
+                            />
+                        )}
                     />
 
-                    <Input 
-                        bg="gray.500" 
-                        placeholder='Confirme a nova senha' 
-                        placeholderTextColor="gray.200"
-                        secureTextEntry
+                    <Controller
+                        control={control}
+                        name="password_confirm"
+                        render={({ field: {onChange, value}}) => (
+                            <Input 
+                                bg="gray.500" 
+                                placeholder='Confirme a nova senha' 
+                                placeholderTextColor="gray.200"
+                                secureTextEntry
+                                onChangeText={onChange}
+                                value={value}
+                                errorMessage={errors.password_confirm?.message}
+                            />
+                        )}
                     />
 
                     <Button 
+                        onPress={handleSubmit(handleEditingProfile)}
                         title="Atualizar"
                         mt={4}
                     />
