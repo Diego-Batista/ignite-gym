@@ -4,20 +4,34 @@ import BackgroundImage from "@assets/background.png";
 import LogoSvg from '@assets/logo.svg';
 import { Button } from "@components/Button";
 import { Input } from "@components/Input";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigation } from "@react-navigation/native";
 import { AuthNavigationRoutesProps } from "@routes/auth.routes";
 import { Controller, useForm } from "react-hook-form";
+import * as yup from "yup";
+
+type FormDataProps = {
+    email: string
+    password: string
+}
+
+const signInSchema = yup.object({
+    email: yup.string().required('Informe o e-mail.').email('E-mail inválido.'),
+    password: yup.string().required('Informe a senha.').min(6, 'A senha deve ter pelo menos 6 digitos.'),
+})
 
 export function SignIn() {
     const navigation = useNavigation<AuthNavigationRoutesProps>()
-    const { control, handleSubmit } = useForm()
+    const { control, handleSubmit, formState: { errors } } = useForm<FormDataProps>({
+        resolver: yupResolver(signInSchema)
+    })
 
     function handleNewAccount() {
         navigation.navigate('signUp')
     }
 
-    async function handleSignIn(data: any) {
-        console.log(data)
+    async function handleSignIn({email, password}: FormDataProps) {
+   
     }
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1}} showsVerticalScrollIndicator={false}>
@@ -52,6 +66,7 @@ export function SignIn() {
                                 autoCapitalize="none"
                                 onChangeText={onChange}
                                 value={value}
+                                errorMessage={errors.email?.message}
                             />
                         )}
                     />
@@ -67,6 +82,7 @@ export function SignIn() {
                                 value={value}
                                 onSubmitEditing={handleSubmit(handleSignIn)}
                                 returnKeyType="send"
+                                errorMessage={errors.password?.message}
                             />
                         )}
                     />
