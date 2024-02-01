@@ -7,7 +7,9 @@ import { Input } from "@components/Input";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigation } from "@react-navigation/native";
 import { api } from "@services/api";
+import axios from "axios";
 import { Controller, useForm } from "react-hook-form";
+import { Alert } from "react-native";
 import * as yup from "yup";
 
 type FormDataProps = {
@@ -37,7 +39,13 @@ export function SignUp() {
 
     async function handleSignUp({ name, email, password }: FormDataProps){
 
-        const response = await api.post('/users', {name, email, password})
+        try {
+            const response = await api.post('/users', {name, email, password})
+        } catch (error) {
+            if(axios.isAxiosError(error)) {
+                Alert.alert(error.response?.data.message)
+            }
+        }
         
     //    const response = await fetch('http://192.168.0.178:3333/users', {
     //     method: 'POST',
