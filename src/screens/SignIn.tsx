@@ -35,7 +35,7 @@ export function SignIn() {
     }
 
     async function handleSignIn({email, password}: FormDataProps) {
-        sigIn(email, password)
+        await sigIn(email, password)
     }
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1}} showsVerticalScrollIndicator={false}>
