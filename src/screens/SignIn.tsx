@@ -5,6 +5,7 @@ import LogoSvg from '@assets/logo.svg';
 import { Button } from "@components/Button";
 import { Input } from "@components/Input";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useAuth } from "@hooks/useAuth";
 import { useNavigation } from "@react-navigation/native";
 import { AuthNavigationRoutesProps } from "@routes/auth.routes";
 import { Controller, useForm } from "react-hook-form";
@@ -21,7 +22,10 @@ const signInSchema = yup.object({
 })
 
 export function SignIn() {
+    const { sigIn } = useAuth()
+
     const navigation = useNavigation<AuthNavigationRoutesProps>()
+
     const { control, handleSubmit, formState: { errors } } = useForm<FormDataProps>({
         resolver: yupResolver(signInSchema)
     })
@@ -31,7 +35,7 @@ export function SignIn() {
     }
 
     async function handleSignIn({email, password}: FormDataProps) {
-   
+        sigIn(email, password)
     }
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1}} showsVerticalScrollIndicator={false}>
