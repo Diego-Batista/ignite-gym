@@ -9,6 +9,7 @@ import { useAuth } from "@hooks/useAuth";
 import { useNavigation } from "@react-navigation/native";
 import { AuthNavigationRoutesProps } from "@routes/auth.routes";
 import { AppError } from "@utils/AppError";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -23,6 +24,7 @@ const signInSchema = yup.object({
 })
 
 export function SignIn() {
+    const [isLoading, setIsLoading] = useState(false)
     const { sigIn } = useAuth()
 
     const toast = useToast()
@@ -39,18 +41,22 @@ export function SignIn() {
 
     async function handleSignIn({email, password}: FormDataProps) {
         try {
-
+            setIsLoading(true)
+            await sigIn(email, password)
         } catch (error) {
             const isAppError = error instanceof AppError
 
             const title = isAppError ? error.message : 'Não foi possível entrar. Tente novamente mais tarde.'
+
+            setIsLoading(false)
+            
             toast.show({
                 title,
                 placement: 'top',
                 bgColor: 'red.500'
             })
         }
-        await sigIn(email, password)
+        
     }
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1}} showsVerticalScrollIndicator={false}>
@@ -109,6 +115,7 @@ export function SignIn() {
                     <Button 
                         title="Acessar" 
                         onPress={handleSubmit(handleSignIn)}
+                        isLoading={isLoading}
                     />
                 </Center>
 
