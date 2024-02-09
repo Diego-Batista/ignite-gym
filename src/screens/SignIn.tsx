@@ -4,7 +4,6 @@ import BackgroundImage from "@assets/background.png";
 import LogoSvg from '@assets/logo.svg';
 import { Button } from "@components/Button";
 import { Input } from "@components/Input";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { useAuth } from "@hooks/useAuth";
 import { useNavigation } from "@react-navigation/native";
 import { AuthNavigationRoutesProps } from "@routes/auth.routes";
@@ -31,9 +30,7 @@ export function SignIn() {
 
     const navigation = useNavigation<AuthNavigationRoutesProps>()
 
-    const { control, handleSubmit, formState: { errors } } = useForm<FormDataProps>({
-        resolver: yupResolver(signInSchema)
-    })
+    const { control, handleSubmit, formState: { errors } } = useForm<FormDataProps>()
 
     function handleNewAccount() {
         navigation.navigate('signUp')
@@ -47,14 +44,13 @@ export function SignIn() {
             const isAppError = error instanceof AppError
 
             const title = isAppError ? error.message : 'Não foi possível entrar. Tente novamente mais tarde.'
-
-            setIsLoading(false)
             
             toast.show({
                 title,
                 placement: 'top',
                 bgColor: 'red.500'
             })
+            setIsLoading(false)
         }
         
     }
