@@ -10,21 +10,15 @@ import { AuthNavigationRoutesProps } from "@routes/auth.routes";
 import { AppError } from "@utils/AppError";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import * as yup from "yup";
 
 type FormDataProps = {
     email: string
     password: string
 }
 
-const signInSchema = yup.object({
-    email: yup.string().required('Informe o e-mail.').email('E-mail inválido.'),
-    password: yup.string().required('Informe a senha.').min(6, 'A senha deve ter pelo menos 6 digitos.'),
-})
-
 export function SignIn() {
     const [isLoading, setIsLoading] = useState(false)
-    const { sigIn } = useAuth()
+    const { singIn } = useAuth()
 
     const toast = useToast()
 
@@ -39,7 +33,7 @@ export function SignIn() {
     async function handleSignIn({email, password}: FormDataProps) {
         try {
             setIsLoading(true)
-            await sigIn(email, password)
+            await singIn(email, password)
         } catch (error) {
             const isAppError = error instanceof AppError
 
