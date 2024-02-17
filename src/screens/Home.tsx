@@ -1,6 +1,7 @@
 import { ExerciseCard } from "@components/ExerciseCard";
 import { Group } from "@components/Group";
 import { HomeHeader } from "@components/HomeHeader";
+import { ExerciseDTO } from "@dtos/ExerciseDTO";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { AppNavigatorRoutesProps } from "@routes/app.routes";
 import { api } from "@services/api";
@@ -10,7 +11,7 @@ import { useCallback, useEffect, useState } from "react";
 
 export function Home() {
     const [group, setGroup] = useState<string[]>([]) 
-    const [exercises, setExercises] = useState(['remada frontal', 'remada unilateral', 'puxada frente', 'terra']) 
+    const [exercises, setExercises] = useState<ExerciseDTO[]>([]) 
     const [groupSelected, setGroupSelected] = useState('costas')
 
     const navigation = useNavigation<AppNavigatorRoutesProps>()
@@ -99,7 +100,7 @@ export function Home() {
 
                 <FlatList 
                     data={exercises}
-                    keyExtractor={item => item}
+                    keyExtractor={item => item.id}
                     renderItem={({ item }) => (
                         <ExerciseCard 
                             onPress={handleOpenExercisesDetails}
