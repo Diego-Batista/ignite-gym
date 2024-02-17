@@ -1,12 +1,12 @@
 import { ExerciseCard } from "@components/ExerciseCard";
 import { Group } from "@components/Group";
 import { HomeHeader } from "@components/HomeHeader";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { AppNavigatorRoutesProps } from "@routes/app.routes";
 import { api } from "@services/api";
 import { AppError } from "@utils/AppError";
-import { FlatList, HStack, Heading, Text, Toast, VStack } from "native-base";
-import { useEffect, useState } from "react";
+import { FlatList, HStack, Heading, Text, VStack, useToast } from "native-base";
+import { useCallback, useEffect, useState } from "react";
 
 export function Home() {
     const [group, setGroup] = useState<string[]>([]) 
@@ -14,7 +14,7 @@ export function Home() {
     const [groupSelected, setGroupSelected] = useState('costas')
 
     const navigation = useNavigation<AppNavigatorRoutesProps>()
-
+    const toast = useToast()
     function handleOpenExercisesDetails() {
         navigation.navigate('exercise')
     }
@@ -29,7 +29,24 @@ export function Home() {
           const isAppError = error instanceof AppError;
           const title = isAppError ? error.message : 'Não foi possível carregar os grupos musculares';
     
-          Toast.show({
+          toast.show({
+            title,
+            placement: 'top',
+            bgColor: 'red.500'
+          })
+        }
+      }
+
+      async function fecthExercisesByGroup() {
+        try {
+          const response = await api.get(`/exercises/bygroup/${groupSelected}`);
+          console.log(response.data);
+    
+        } catch (error) {
+          const isAppError = error instanceof AppError;
+          const title = isAppError ? error.message : 'Não foi possível carregar os exercícios';
+    
+          toast.show({
             title,
             placement: 'top',
             bgColor: 'red.500'
@@ -40,6 +57,12 @@ export function Home() {
       useEffect(() => {
         fetchGroups();
       },[])
+
+      useFocusEffect(
+        useCallback(() => {
+          fecthExercisesByGroup()
+        },[groupSelected])
+      )
 
     return (
         <VStack >
