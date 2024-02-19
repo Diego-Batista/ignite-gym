@@ -41,7 +41,8 @@ export function Home() {
       async function fecthExercisesByGroup() {
         try {
           const response = await api.get(`/exercises/bygroup/${groupSelected}`);
-          console.log(response.data);
+          setExercises(response.data)
+          console.log(response.data)
     
         } catch (error) {
           const isAppError = error instanceof AppError;
@@ -104,6 +105,7 @@ export function Home() {
                     renderItem={({ item }) => (
                         <ExerciseCard 
                             onPress={handleOpenExercisesDetails}
+                            data={item}
                         />
                     )}
                     showsVerticalScrollIndicator={false}
