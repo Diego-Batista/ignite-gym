@@ -14,7 +14,7 @@ export function Home() {
     const [isLoading, setIsLoading] = useState(true)
     const [group, setGroup] = useState<string[]>([]) 
     const [exercises, setExercises] = useState<ExerciseDTO[]>([]) 
-    const [groupSelected, setGroupSelected] = useState('bíceps')
+    const [groupSelected, setGroupSelected] = useState('antebraço')
 
     const navigation = useNavigation<AppNavigatorRoutesProps>()
     const toast = useToast()
@@ -46,7 +46,6 @@ export function Home() {
           setIsLoading(true)
           const response = await api.get(`/exercises/bygroup/${groupSelected}`);
           setExercises(response.data)
-          console.log(response.data)
     
         } catch (error) {
           const isAppError = error instanceof AppError;
