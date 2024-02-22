@@ -18,8 +18,8 @@ const PHOTO_SIZE = 33
 type FormDataProps = {
     name: string
     password: string
-    new_password: string
-    password_confirm: string
+    old_password: string;
+    confirm_password: string;
 }
 
 const profileSchema = yup.object({
@@ -72,7 +72,7 @@ export function Profile() {
         }  
     }
 
-    async function handleEditingProfile({ name, password, new_password, password_confirm }: FormDataProps){
+    async function handleProfileUpdate({ name, password, old_password, confirm_password }: FormDataProps){
        
     }
 
@@ -147,36 +147,34 @@ export function Profile() {
 
                     <Controller
                         control={control}
-                        name="new_password"
-                        render={({ field: {onChange, value}}) => (
+                        name="old_password"
+                        render={({ field: { onChange }}) => (
                             <Input 
                                 bg="gray.500" 
                                 placeholder='Nova senha' 
                                 placeholderTextColor="gray.200"
                                 secureTextEntry
                                 onChangeText={onChange}
-                                value={value}
                             />
                         )}
                     />
 
                     <Controller
                         control={control}
-                        name="password_confirm"
-                        render={({ field: {onChange, value}}) => (
+                        name="confirm_password"
+                        render={({ field: { onChange }}) => (
                             <Input 
                                 bg="gray.500" 
                                 placeholder='Confirme a nova senha' 
                                 placeholderTextColor="gray.200"
                                 secureTextEntry
                                 onChangeText={onChange}
-                                value={value}
                             />
                         )}
                     />
 
                     <Button 
-                        onPress={handleSubmit(handleEditingProfile)}
+                        onPress={handleSubmit(handleProfileUpdate)}
                         title="Atualizar"
                         mt={4}
                     />
