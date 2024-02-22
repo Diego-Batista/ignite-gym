@@ -3,7 +3,6 @@ import { Button } from "@components/Button";
 import { Input } from "@components/Input";
 import { ScreenHeader } from "@components/ScreenHeader";
 import { UserPhoto } from "@components/UserPhoto";
-import { yupResolver } from "@hookform/resolvers/yup";
 import * as FileSystem from 'expo-file-system';
 import * as ImagePicker from "expo-image-picker";
 import { Box, Center, Heading, ScrollView, Skeleton, Text, VStack, useToast } from "native-base";
@@ -11,6 +10,8 @@ import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { TouchableOpacity } from "react-native";
 import * as yup from "yup";
+
+import { useAuth } from '@hooks/useAuth';
 
 const PHOTO_SIZE = 33
 
@@ -32,11 +33,11 @@ export function Profile() {
     const [photoIsLoading, setPhotoIsLoading] = useState(false)
     const [userPhoto, setUserPhoto] = useState('https://github.com/Diego-Batista.png')
 
-    const { control, handleSubmit, formState: { errors } } = useForm<FormDataProps>({
-        resolver: yupResolver(profileSchema)
-    })
-
     const toast = useToast()
+    const { user } = useAuth();
+    const { control, handleSubmit, formState: { errors }  } = useForm<FormDataProps>({ defaultValues: { 
+        name: user.name
+    } })
 
     async function handlePhotoSelected() {
         setPhotoIsLoading(true)
@@ -112,14 +113,13 @@ export function Profile() {
                                 placeholder="Diego Batista"
                                 onChangeText={onChange}
                                 value={value}
-                                errorMessage={errors.name?.message}
                             />
                         )}
                     />
 
                     <Box bg='gray.600' h={14} justifyContent='center' w='full' rounded={6} px={4}>
                         <Text color='gray.300' fontSize='md'>
-                            diegobtistadev@gmail.com
+                            {user.email}
                         </Text>
                     </Box>
 
@@ -141,7 +141,6 @@ export function Profile() {
                                 secureTextEntry
                                 onChangeText={onChange}
                                 value={value}
-                                errorMessage={errors.password?.message}
                             />
                         )}
                     />
@@ -157,7 +156,6 @@ export function Profile() {
                                 secureTextEntry
                                 onChangeText={onChange}
                                 value={value}
-                                errorMessage={errors.new_password?.message}
                             />
                         )}
                     />
@@ -173,7 +171,6 @@ export function Profile() {
                                 secureTextEntry
                                 onChangeText={onChange}
                                 value={value}
-                                errorMessage={errors.password_confirm?.message}
                             />
                         )}
                     />
