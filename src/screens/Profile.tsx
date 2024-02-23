@@ -19,14 +19,15 @@ const PHOTO_SIZE = 33
 type FormDataProps = {
     name: string;
     email?: string;
-    password?: string;
-    old_password?: string;
-    confirm_password?: string;
+    password?: string | null | undefined;
+    old_password?: string | null | undefined;
+    confirm_password?: string | null | undefined;
 };
 
 const profileSchema = yup.object({
     name: yup.string().required('Informe o nome'),
-  
+    password: yup.string().min(6, 'A senha deve ter pelo menos 6 dígitos.').nullable().transform((value) => !!value ? value : null),
+    confirm_password: yup.string().nullable().transform((value) => !!value ? value : null).oneOf([yup.ref('password'), null], 'A confirmação de senha não confere.'),
   })
 
 export function Profile() {
@@ -144,7 +145,7 @@ export function Profile() {
                                 placeholderTextColor="gray.200"
                                 secureTextEntry
                                 onChangeText={onChange}
-                                value={value}
+                                value={value!}
                             />
                         )}
                     />
