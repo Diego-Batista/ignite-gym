@@ -11,23 +11,23 @@ import { Controller, useForm } from "react-hook-form";
 import { TouchableOpacity } from "react-native";
 import * as yup from "yup";
 
+import { yupResolver } from '@hookform/resolvers/yup';
 import { useAuth } from '@hooks/useAuth';
 
 const PHOTO_SIZE = 33
 
 type FormDataProps = {
-    name: string
-    password: string
-    old_password: string;
-    confirm_password: string;
-}
+    name: string;
+    email?: string;
+    password?: string;
+    old_password?: string;
+    confirm_password?: string;
+};
 
 const profileSchema = yup.object({
-    name: yup.string().required('Informe o nome.'),
-    password: yup.string().required('Informe a senha.').min(6, 'A senha deve ter pelo menos 6 digitos.'),
-    new_password: yup.string().required('Informe a senha.').min(6, 'A senha deve ter pelo menos 6 digitos.'),
-    password_confirm: yup.string().required('Confirme a senha.').oneOf([yup.ref('new_password')], 'As senhas devem ser iguais.')
-})
+    name: yup.string().required('Informe o nome'),
+  
+  })
 
 export function Profile() {
     const [photoIsLoading, setPhotoIsLoading] = useState(false)
@@ -35,9 +35,12 @@ export function Profile() {
 
     const toast = useToast()
     const { user } = useAuth();
-    const { control, handleSubmit, formState: { errors }  } = useForm<FormDataProps>({ defaultValues: { 
-        name: user.name
-    } })
+    const { control, handleSubmit, formState: { errors }  } = useForm<FormDataProps>({ 
+        defaultValues: { 
+            name: user.name
+        },
+        resolver: yupResolver(profileSchema)
+    })
 
     async function handlePhotoSelected() {
         setPhotoIsLoading(true)
@@ -113,6 +116,7 @@ export function Profile() {
                                 placeholder="Diego Batista"
                                 onChangeText={onChange}
                                 value={value}
+                                errorMessage={errors.name?.message}
                             />
                         )}
                     />
@@ -155,6 +159,7 @@ export function Profile() {
                                 placeholderTextColor="gray.200"
                                 secureTextEntry
                                 onChangeText={onChange}
+                                errorMessage={errors.password?.message}
                             />
                         )}
                     />
@@ -169,6 +174,7 @@ export function Profile() {
                                 placeholderTextColor="gray.200"
                                 secureTextEntry
                                 onChangeText={onChange}
+                                errorMessage={errors.confirm_password?.message}
                             />
                         )}
                     />
