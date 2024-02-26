@@ -28,13 +28,13 @@ type FormDataProps = {
 
 const profileSchema = yup.object({
     name: yup.string().required('Informe o nome'),
-    old_password: yup.string().min(6, 'A senha deve ter pelo menos 6 dígitos.').nullable().transform((value) => !!value ? value : null),
+    password: yup.string().min(6, 'A senha deve ter pelo menos 6 dígitos.').nullable().transform((value) => !!value ? value : null),
     confirm_password: yup
     .string()
     .nullable()
     .transform((value) => !!value ? value : null)
-    .oneOf([yup.ref('old_password'), null], 'A confirmação de senha não confere.')
-    .when('old_password', {
+    .oneOf([yup.ref('password'), null], 'A confirmação de senha não confere.')
+    .when('password', {
         is: (Field: any) => Field,
         then: (schema) => schema.nullable().required('Informe a confirmação da senha.').transform((value) => !!value ? value : null)
     })
@@ -78,7 +78,15 @@ export function Profile() {
                         bgColor: 'red.500'
                     })
                 }
-                setUserPhoto(photoSelected.assets[0].uri) 
+                const fileExtension = photoSelected.assets[0].uri.split('.').pop();
+
+                const photoFile = {
+                name: `${user.name}.${fileExtension}`.toLowerCase(),
+                uri: photoSelected.assets[0].uri,
+                type: `${photoSelected.assets[0].type}/${fileExtension}`
+                }
+
+        console.log(photoFile);
             }
         } catch (error) {
             console.log(error)
@@ -175,6 +183,21 @@ export function Profile() {
 
                     <Controller
                         control={control}
+                        name="old_password"
+                        render={({ field: { onChange }}) => (
+                            <Input 
+                                bg="gray.500" 
+                                placeholder='Nova senha' 
+                                placeholderTextColor="gray.200"
+                                secureTextEntry
+                                onChangeText={onChange}
+                            />
+                        )}
+                    />
+
+
+                    <Controller
+                        control={control}
                         name="password"
                         render={({ field: {onChange, value}}) => (
                             <Input 
@@ -184,21 +207,7 @@ export function Profile() {
                                 secureTextEntry
                                 onChangeText={onChange}
                                 value={value!}
-                            />
-                        )}
-                    />
-
-                    <Controller
-                        control={control}
-                        name="old_password"
-                        render={({ field: { onChange }}) => (
-                            <Input 
-                                bg="gray.500" 
-                                placeholder='Nova senha' 
-                                placeholderTextColor="gray.200"
-                                secureTextEntry
-                                onChangeText={onChange}
-                                errorMessage={errors.old_password?.message}
+                                errorMessage={errors.password?.message}
                             />
                         )}
                     />
