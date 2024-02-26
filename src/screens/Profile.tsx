@@ -1,4 +1,5 @@
 
+import defaulUserPhotoImg from '@assets/userPhotoDefault.png';
 import { Button } from "@components/Button";
 import { Input } from "@components/Input";
 import { ScreenHeader } from "@components/ScreenHeader";
@@ -43,7 +44,6 @@ const profileSchema = yup.object({
 export function Profile() {
     const [isUpdating, setIsUpdating] = useState(false)
     const [photoIsLoading, setPhotoIsLoading] = useState(false)
-    const [userPhoto, setUserPhoto] = useState('https://github.com/Diego-Batista.png')
 
     const toast = useToast()
     const { user, updateUserProfile  } = useAuth();
@@ -81,9 +81,9 @@ export function Profile() {
                 const fileExtension = photoSelected.assets[0].uri.split('.').pop();
 
                 const photoFile = {
-                name: `${user.name}.${fileExtension}`.toLowerCase(),
-                uri: photoSelected.assets[0].uri,
-                type: `${photoSelected.assets[0].type}/${fileExtension}`
+                    name: `${user.name}.${fileExtension}`.toLowerCase(),
+                    uri: photoSelected.assets[0].uri,
+                    type: `${photoSelected.assets[0].type}/${fileExtension}`
                 } as any
 
                 const userPhotoUploadForm = new FormData();
@@ -161,7 +161,11 @@ export function Profile() {
                         />
                     :
                         <UserPhoto
-                            source={{ uri: userPhoto }}
+                            source={
+                                user.avatar  
+                                ? { uri: `${api.defaults.baseURL}/avatar/${user.avatar}` } 
+                                : defaulUserPhotoImg
+                            }
                             alt="Foto do usuário"
                             size={33}
                         />
